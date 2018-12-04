@@ -563,15 +563,20 @@ def hrpMC(numIters=10000, nObs=520, size0=5, size1=5, mu0=0, sigma0=1e-2,
 
 
 #Loading our data file and calculating returns
-symbols = ['BRL  Curncy', 'PLN Curncy', 'TRY Curncy', 'ZAR Curncy', 'MXN Curncy']
-prices = pd.read_excel("FX_MarketData.xlsx",sheet="Tier1_FX",header=0)
+
+
+
+prices = pd.read_excel("FX_MarketData_All.xlsx",sheet="All_FX",header=0)
+names = prices.head(0)
+names= names.drop(['Dates'],axis=1)
+symbols=names.columns.values.tolist()
 prices.drop(prices.columns[[0]], axis=1)
 prices.set_index('Dates',inplace=True)
 fund_num = len(prices.columns)  - 1
 
 test=prices.copy()
 rets= test/test.shift(1) -1
-rets=daily_pc.drop(daily_pc.index[0])
+rets=rets.drop(rets.index[0])
 
 eoms = rets.resample('1BM').mean().index[13:-1]
 covs = pd.Panel(items=eoms, minor_axis=rets.columns, major_axis=rets.columns)
@@ -598,7 +603,7 @@ portfolio_funcs = OrderedDict((
     ('Min-Variance weighting', lambda returns, cov, corr: get_min_variance(returns, cov)),
     ('Robust Min-Variance weighting', lambda returns, cov, corr: get_min_variance(returns, cov=cov_robust(cov))),        
     ('Hierarchical weighting (by LdP)', lambda returns, cov, corr: getHRP(cov, corr)),
-    #('Robust Hierarchical weighting (by LdP)', lambda returns, cov, corr: getHRP(cov_robust(cov), corr_robust(cov))),# getting error
+   # ('Robust Hierarchical weighting (by LdP)', lambda returns, cov, corr: getHRP(cov_robust(cov), corr_robust(cov))),# getting error
     #('Network weighting (by Jochen Papenbrock)', lambda x: network_weights.loc[x])
 ))
 
