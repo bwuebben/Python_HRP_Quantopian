@@ -20,7 +20,13 @@ from cvxopt import blas, solvers
 import pandas as pd
 
 np.random.seed(123)
+import subprocess
+import sys
 
+def install(package):
+    subprocess.call([sys.executable, "-m", "pip", "install", package])
+    
+    
 # Turn off progress printing
 solvers.options['show_progress'] = False
 
