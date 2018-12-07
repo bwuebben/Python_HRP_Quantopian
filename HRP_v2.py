@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 """
 Created on Fri Nov 30 14:46:14 2018
 https://www.quantopian.com/posts/hierarchical-risk-parity-comparing-various-portfolio-diversification-techniques
@@ -20,11 +20,7 @@ from cvxopt import blas, solvers
 import pandas as pd
 
 np.random.seed(123)
-import subprocess
-import sys
 
-def install(package):
-    subprocess.call([sys.executable, "-m", "pip", "install", package])
     
     
 # Turn off progress printing
@@ -598,6 +594,7 @@ for eom in eoms:
     covs_robust.loc[eom] = cov_robust(rets_slice)
     corrs_robust.loc[eom] = corr_robust(rets_slice)
 
+print(covs)
 
 
 portfolio_funcs = OrderedDict((
