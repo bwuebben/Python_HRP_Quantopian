@@ -501,10 +501,12 @@ def getHRP(cov, corr):
     dist = correlDist(corr)
     link = sch.linkage(dist, 'single')
     sortIx = getQuasiDiag(link)
-    sortIx = corr.index[sortIx].tolist()
-    # recover labels
+    sortIx = corr.index[sortIx].tolist()  # recover labels
+    df0=corr.loc[sortIx,sortIx] #reorder
+    #plt.plotCorrMatrix('HRP3_corr1.png',df0,labels=df0.columns)
+    #Capital allocation
     hrp = getRecBipart(cov, sortIx)
-
+   #print(hrp)
     return hrp.sort_index()
 
 
@@ -665,4 +667,10 @@ for name in weights:
     weights.loc[name].plot(colors=colors)
     plt.title(name)
     plt.savefig("Weights_over_time" + name + ".png")
-
+    
+writer=pd.ExcelWriter('Weights_Over_Time.xlsx',engine='xlsxwriter')
+    
+for name in weights:
+    weights.loc[name].to_excel(writer, name)
+writer.save()
+  
